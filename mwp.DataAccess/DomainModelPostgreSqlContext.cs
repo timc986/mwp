@@ -27,10 +27,10 @@ namespace mwp.DataAccess
             builder.Entity<UserRole>().HasKey(m => m.Id);
 
             // shadow properties
-            builder.Entity<Record>().Property<DateTime>("UpdatedCreatedOn");
-            builder.Entity<User>().Property<DateTime>("UpdatedCreatedOn");
-            builder.Entity<UserGroup>().Property<DateTime>("UpdatedCreatedOn");
-            builder.Entity<UserRole>().Property<DateTime>("UpdatedCreatedOn");
+            //builder.Entity<Record>().Property<DateTime>("UpdatedCreatedOn");
+            //builder.Entity<User>().Property<DateTime>("UpdatedCreatedOn");
+            //builder.Entity<UserGroup>().Property<DateTime>("UpdatedCreatedOn");
+            //builder.Entity<UserRole>().Property<DateTime>("UpdatedCreatedOn");
 
             base.OnModelCreating(builder);
         }
@@ -39,24 +39,24 @@ namespace mwp.DataAccess
         {
             ChangeTracker.DetectChanges();
 
-            UpdateUpdatedProperty<Record>();
-            UpdateUpdatedProperty<User>();
-            UpdateUpdatedProperty<UserGroup>();
-            UpdateUpdatedProperty<UserRole>();
+            //UpdateUpdatedProperty<Record>();
+            //UpdateUpdatedProperty<User>();
+            //UpdateUpdatedProperty<UserGroup>();
+            //UpdateUpdatedProperty<UserRole>();
 
             return base.SaveChanges();
         }
 
-        private void UpdateUpdatedProperty<T>() where T : class
-        {
-            var modifiedSourceInfo =
-                ChangeTracker.Entries<T>()
-                    .Where(e => e.State == EntityState.Added || e.State == EntityState.Modified);
+        //private void UpdateUpdatedProperty<T>() where T : class
+        //{
+        //    var modifiedSourceInfo =
+        //        ChangeTracker.Entries<T>()
+        //            .Where(e => e.State == EntityState.Added || e.State == EntityState.Modified);
 
-            foreach (var entry in modifiedSourceInfo)
-            {
-                entry.Property("UpdatedTimestamp").CurrentValue = DateTime.UtcNow;
-            }
-        }
+        //    foreach (var entry in modifiedSourceInfo)
+        //    {
+        //        entry.Property("UpdatedTimestamp").CurrentValue = DateTime.UtcNow;
+        //    }
+        //}
     }
 }
