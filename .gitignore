@@ -23,6 +23,8 @@ $RECYCLE.BIN/
 *.log
 mwp.WebApi/bin/
 mwp.WebApi/obj/
+mwp.DataAccess/bin/
+mwp.DataAccess/obj/
 packages/
 # =========================
 # Operating System Files
