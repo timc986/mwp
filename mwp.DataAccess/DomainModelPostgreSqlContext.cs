@@ -7,6 +7,10 @@ namespace mwp.DataAccess
 {
     public class DomainModelPostgreSqlContext : DbContext
     {
+        //public DomainModelPostgreSqlContext(DbContextOptions<DomainModelPostgreSqlContext> options) : base(options)
+        //{
+        //}
+
         public DbSet<Record> Record { get; set; }
         public DbSet<User> User { get; set; }
         public DbSet<UserGroup> UserGroup { get; set; }
