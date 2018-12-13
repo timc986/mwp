@@ -2,6 +2,7 @@
 using System;
 using System.Collections.Generic;
 using System.Text;
+using System.Threading.Tasks;
 
 namespace mwp.Service.Login
 {
@@ -14,13 +15,13 @@ namespace mwp.Service.Login
             this.dataAccessProvider = dataAccessProvider;
         }
 
-        public bool CheckUserExist(long id)
+        public async Task<bool> CheckUserExist(long id)
         {
             try
             {
                 var result = false;
 
-                var xx = dataAccessProvider.UserExists(id);
+                var xx = await dataAccessProvider.UserExists(id);
 
                 return result;
             }
