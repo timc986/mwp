@@ -28,8 +28,24 @@ namespace mwp.WebApi.Controllers
         }
 
         [AllowAnonymous]
-        [HttpPost]
+        [Route("login")]
         public IActionResult Login([FromBody]UserModel login)
+        {
+            IActionResult response = Unauthorized();
+            var user = AuthenticateUser(login);
+
+            if (user != null)
+            {
+                var tokenString = GenerateJsonWebToken(user);
+                response = Ok(new { token = tokenString });
+            }
+
+            return response;
+        }
+
+        [AllowAnonymous]
+        [Route("create")]
+        public IActionResult Login2([FromBody]UserModel login)
         {
             IActionResult response = Unauthorized();
             var user = AuthenticateUser(login);
