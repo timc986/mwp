@@ -7,6 +7,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.IdentityModel.Tokens;
+using mwp.Service.Login;
 
 namespace mwp.WebApi
 {
@@ -26,6 +27,7 @@ namespace mwp.WebApi
 
             //For IOC
             services.AddSingleton<IInventoryService, InventoryService>();
+            services.AddSingleton<ILoginService, LoginService>();
 
             //For token authentication
             services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)

@@ -19,10 +19,12 @@ namespace mwp.WebApi.Controllers
     public class LoginController : ControllerBase
     {
         private readonly IConfiguration config;
+        private readonly ILoginService loginService;
 
-        public LoginController(IConfiguration config)
+        public LoginController(IConfiguration config, ILoginService loginService)
         {
             this.config = config;
+            this.loginService = loginService;
         }
 
         [AllowAnonymous]
