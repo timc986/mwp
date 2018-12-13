@@ -45,16 +45,18 @@ namespace mwp.WebApi.Controllers
 
         [AllowAnonymous]
         [Route("create")]
-        public IActionResult Login2([FromBody]UserModel login)
+        public IActionResult Test([FromBody]UserModel login)
         {
             IActionResult response = Unauthorized();
-            var user = AuthenticateUser(login);
+            //var user = AuthenticateUser(login);
 
-            if (user != null)
-            {
-                var tokenString = GenerateJsonWebToken(user);
-                response = Ok(new { token = tokenString });
-            }
+            //if (user != null)
+            //{
+            //    var tokenString = GenerateJsonWebToken(user);
+            //    response = Ok(new { token = tokenString });
+            //}
+
+            var result = loginService.CheckUserExist(1);
 
             return response;
         }

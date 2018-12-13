@@ -1,4 +1,5 @@
 ﻿using System.Text;
+using mwp.DataAccess;
 using mwp.WebApi.Services;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Builder;
@@ -8,6 +9,7 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.IdentityModel.Tokens;
 using mwp.Service.Login;
+using Microsoft.EntityFrameworkCore;
 
 namespace mwp.WebApi
 {
@@ -26,8 +28,9 @@ namespace mwp.WebApi
             services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_1);
 
             //For IOC
-            services.AddSingleton<IInventoryService, InventoryService>();
-            services.AddSingleton<ILoginService, LoginService>();
+            services.AddScoped<IInventoryService, InventoryService>();
+            services.AddScoped<ILoginService, LoginService>();
+            services.AddScoped<IDataAccessProvider, DataAccessPostgreSqlProvider>();
 
             //For token authentication
             services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
@@ -46,6 +49,10 @@ namespace mwp.WebApi
                         IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(Configuration["Jwt:Key"]))
                     };
                 });
+
+            var sqlConnectionString = "User ID=postgres;Password=masterpw;Host=localhost;Port=5432;Database=mwp-local;Pooling=true;";
+
+            services.AddDbContext<DomainModelPostgreSqlContext>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

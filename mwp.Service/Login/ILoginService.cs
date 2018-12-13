@@ -6,5 +6,6 @@ namespace mwp.Service.Login
 {
     public interface ILoginService
     {
+        bool CheckUserExist(long id);
     }
 }

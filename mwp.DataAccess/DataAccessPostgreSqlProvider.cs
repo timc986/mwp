@@ -8,7 +8,7 @@ using Microsoft.EntityFrameworkCore;
 
 namespace mwp.DataAccess
 {
-    public class DataAccessPostgreSqlProvider
+    public class DataAccessPostgreSqlProvider: IDataAccessProvider
     {
         private readonly DomainModelPostgreSqlContext context;
 
