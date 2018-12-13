@@ -7,6 +7,8 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "mwp.WebApi", "mwp.WebApi\mw
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "mwp.DataAccess", "mwp.DataAccess\mwp.DataAccess.csproj", "{FE908BD0-63A8-40E4-A705-4EA4A4610DCE}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "mwp.Service", "mwp.Service\mwp.Service.csproj", "{C978DDB8-30CF-4F41-9B62-B47ED5DE11D8}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -21,6 +23,10 @@ Global
 		{FE908BD0-63A8-40E4-A705-4EA4A4610DCE}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{FE908BD0-63A8-40E4-A705-4EA4A4610DCE}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{FE908BD0-63A8-40E4-A705-4EA4A4610DCE}.Release|Any CPU.Build.0 = Release|Any CPU
+		{C978DDB8-30CF-4F41-9B62-B47ED5DE11D8}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{C978DDB8-30CF-4F41-9B62-B47ED5DE11D8}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{C978DDB8-30CF-4F41-9B62-B47ED5DE11D8}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{C978DDB8-30CF-4F41-9B62-B47ED5DE11D8}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

@@ -5,6 +5,7 @@ using System.Linq;
 using System.Security.Claims;
 using System.Text;
 using System.Threading.Tasks;
+using mwp.Service.Login;
 using mwp.WebApi.Models;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -18,10 +19,12 @@ namespace mwp.WebApi.Controllers
     public class LoginController : ControllerBase
     {
         private readonly IConfiguration config;
+        private readonly ILoginService loginService;
 
-        public LoginController(IConfiguration config)
+        public LoginController(IConfiguration config, ILoginService loginService)
         {
             this.config = config;
+            this.loginService = loginService;
         }
 
         [AllowAnonymous]

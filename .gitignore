@@ -25,6 +25,8 @@ mwp.WebApi/bin/
 mwp.WebApi/obj/
 mwp.DataAccess/bin/
 mwp.DataAccess/obj/
+mwp.Service/bin/
+mwp.Service/obj/
 packages/
 # =========================
 # Operating System Files
