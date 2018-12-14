@@ -5,12 +5,11 @@ using System.Text;
 
 namespace mwp.DataAccess.Entities
 {
-    public class UserRole
+    public class RecordVisibility
     {
         [Key]
         public long Id { get; set; }
         [Required]
         public string Name { get; set; }
-        public string Description { get; set; }
     }
 }

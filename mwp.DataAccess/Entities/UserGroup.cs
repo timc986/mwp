@@ -9,9 +9,10 @@ namespace mwp.DataAccess.Entities
     {
         [Key]
         public long Id { get; set; }
+        [Required]
         public string Name { get; set; }
         public string Description { get; set; }
+        [Required]
         public DateTime CreatedOn { get; set; }
-        public bool IsDeleted { get; set; }
     }
 }
