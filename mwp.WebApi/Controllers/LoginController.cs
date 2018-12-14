@@ -67,9 +67,7 @@ namespace mwp.WebApi.Controllers
                 Email = "timothychan92test@yahoo.com.hk",
                 Password = "1234567890",
                 UserGroupId = 1,
-                UserRoleId = 1,
-                UserRole = null,
-                UserGroup = null
+                UserRoleId = 1
             };
 
             var result3 = await loginService.CreateUser(newUser);

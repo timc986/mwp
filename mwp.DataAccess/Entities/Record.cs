@@ -9,6 +9,7 @@ namespace mwp.DataAccess.Entities
     public class Record
     {
         [Key]
+        [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public long Id { get; set; }
         public string Title { get; set; }
         [Required]

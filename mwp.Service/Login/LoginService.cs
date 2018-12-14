@@ -50,9 +50,9 @@ namespace mwp.Service.Login
         {
             try
             {
-                var newUserGroup = new UserGroup {Name = "TimGroup", CreatedOn = DateTime.UtcNow};
+                //var newUserGroup = new UserGroup {Name = "TimGroup", CreatedOn = DateTime.UtcNow};
 
-                await dataAccessProvider.AddUserGroup(newUserGroup);
+                //await dataAccessProvider.AddUserGroup(newUserGroup);
 
 
                 await dataAccessProvider.AddUser(user);
