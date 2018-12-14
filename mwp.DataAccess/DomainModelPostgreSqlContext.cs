@@ -31,9 +31,9 @@ namespace mwp.DataAccess
 
             // set default values
             builder.Entity<User>().Property(u => u.IsDeleted).HasDefaultValue(false);
-            builder.Entity<User>().Property(u => u.CreatedOn).HasDefaultValue(DateTime.UtcNow);
-            builder.Entity<UserGroup>().Property(u => u.CreatedOn).HasDefaultValue(DateTime.UtcNow);
-            builder.Entity<Record>().Property(r => r.CreatedOn).HasDefaultValue(DateTime.UtcNow);
+            builder.Entity<User>().Property(u => u.CreatedOn).HasDefaultValueSql("now()");
+            builder.Entity<UserGroup>().Property(u => u.CreatedOn).HasDefaultValueSql("now()");
+            builder.Entity<Record>().Property(r => r.CreatedOn).HasDefaultValueSql("now()");
             // shadow properties
             //builder.Entity<Record>().Property<DateTime>("UpdatedCreatedOn");
             //builder.Entity<User>().Property<DateTime>("UpdatedCreatedOn");

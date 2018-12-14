@@ -46,7 +46,7 @@ namespace mwp.WebApi.Controllers
 
         [AllowAnonymous]
         [Route("create")]
-        public async Task<IActionResult> Test([FromBody]UserModel login)
+        public async Task<IActionResult> CreateUser([FromBody]UserModel login)
         {
             IActionResult response = Unauthorized();
             //var user = AuthenticateUser(login);
@@ -57,20 +57,26 @@ namespace mwp.WebApi.Controllers
             //    response = Ok(new { token = tokenString });
             //}
 
-            var result = await loginService.CheckUserExist(1);
+            var existingUser = await loginService.GetUser(100);
 
-            var result2 = await loginService.GetUser(1);
-
-            var newUser = new User
+            if (existingUser == null)
             {
-                Name = "Tim",
-                Email = "timothychan92test@yahoo.com.hk",
-                Password = "1234567890",
-                UserGroupId = 1,
-                UserRoleId = 1
-            };
+                var newUser = new User
+                {
+                    Name = "Tim",
+                    Email = "timothychan92test@yahoo.com.hk",
+                    Password = "1234567890",
+                    UserGroupId = 1,
+                    UserRoleId = 1
+                };
 
-            var result3 = await loginService.CreateUser(newUser);
+                var serviceResponse = await loginService.CreateUser(newUser);
+
+                if (serviceResponse)
+                {
+                    response = Ok(new { userId = newUser.Id });
+                }
+            }
 
             return response;
         }
