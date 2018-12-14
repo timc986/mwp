@@ -9,6 +9,7 @@ namespace mwp.DataAccess.Entities
     public class User
     {
         [Key]
+        [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public long Id { get; set; }
         [Required]
         public string Name { get; set; }
@@ -20,11 +21,11 @@ namespace mwp.DataAccess.Entities
         public DateTime CreatedOn { get; set; }
         [Required]
         public bool IsDeleted { get; set; }
-        [ForeignKey("Id")]
-        public UserGroup UserGroup { get; set; }
+        [ForeignKey("UserGroupId")]
+        public virtual UserGroup UserGroup { get; set; }
         public long UserGroupId { get; set; }
-        [ForeignKey("Id")]
-        public UserRole UserRole { get; set; }
+        [ForeignKey("UserRoleId")]
+        public virtual UserRole UserRole { get; set; }
         public long UserRoleId { get; set; }
     }
 }

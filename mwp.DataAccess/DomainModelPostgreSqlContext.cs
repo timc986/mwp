@@ -18,15 +18,20 @@ namespace mwp.DataAccess
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
-            optionsBuilder.UseNpgsql(@"User ID=postgres;Password=masterpw;Host=localhost;Port=5432;Database=mwp-local;Pooling=true;");
+            optionsBuilder.UseLazyLoadingProxies().UseNpgsql(@"User ID=postgres;Password=masterpw;Host=localhost;Port=5432;Database=mwp-local;Pooling=true;");
         }
 
         protected override void OnModelCreating(ModelBuilder builder)
         {
             builder.Entity<Record>().HasKey(m => m.Id);
+            builder.Entity<RecordVisibility>().HasKey(m => m.Id);
             builder.Entity<User>().HasKey(m => m.Id);
             builder.Entity<UserGroup>().HasKey(m => m.Id);
             builder.Entity<UserRole>().HasKey(m => m.Id);
+
+            // set default values
+            //builder.Entity<User>().Property(u => u.IsDeleted).HasDefaultValue(true);
+            //builder.Entity<User>().Property(u => u.CreatedOn).HasDefaultValue(DateTime.Now);
 
             // shadow properties
             //builder.Entity<Record>().Property<DateTime>("UpdatedCreatedOn");

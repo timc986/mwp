@@ -38,7 +38,7 @@ namespace mwp.DataAccess
 
         public async Task<User> GetUser(long userId)
         {
-            return await context.User.FirstAsync(u => u.Id == userId);
+            return await context.User.FirstOrDefaultAsync(u => u.Id == userId);
         }
 
         public async Task<bool> UserExists(long userId)
@@ -46,6 +46,12 @@ namespace mwp.DataAccess
             var user = context.User.Where(u => u.Id == userId);
 
             return await user.AnyAsync();
+        }
+
+        public async Task AddUserGroup(UserGroup userGroup)
+        {
+            context.UserGroup.Add(userGroup);
+            await context.SaveChangesAsync();
         }
     }
 }

@@ -5,6 +5,7 @@ using System.Linq;
 using System.Security.Claims;
 using System.Text;
 using System.Threading.Tasks;
+using mwp.DataAccess.Entities;
 using mwp.Service.Login;
 using mwp.WebApi.Models;
 using Microsoft.AspNetCore.Authorization;
@@ -57,6 +58,21 @@ namespace mwp.WebApi.Controllers
             //}
 
             var result = await loginService.CheckUserExist(1);
+
+            var result2 = await loginService.GetUser(1);
+
+            var newUser = new User
+            {
+                Name = "Tim",
+                Email = "timothychan92test@yahoo.com.hk",
+                Password = "1234567890",
+                UserGroupId = 1,
+                UserRoleId = 1,
+                UserRole = null,
+                UserGroup = null
+            };
+
+            var result3 = await loginService.CreateUser(newUser);
 
             return response;
         }

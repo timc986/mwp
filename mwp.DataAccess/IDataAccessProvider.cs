@@ -10,5 +10,6 @@ namespace mwp.DataAccess
         Task DeleteUser(long userId);
         Task<User> GetUser(long userId);
         Task<bool> UserExists(long userId);
+        Task AddUserGroup(UserGroup userGroup);
     }
 }
