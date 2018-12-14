@@ -41,6 +41,11 @@ namespace mwp.DataAccess
             return await context.User.FirstOrDefaultAsync(u => u.Id == userId);
         }
 
+        public async Task<User> GetUserByName(string username)
+        {
+            return await context.User.FirstOrDefaultAsync(u => u.Name == username);
+        }
+
         public async Task<bool> UserExists(long userId)
         {
             var user = context.User.Where(u => u.Id == userId);

@@ -5,8 +5,10 @@ using System.Linq;
 using System.Security.Claims;
 using System.Text;
 using System.Threading.Tasks;
+using AutoMapper;
+using mwp.DataAccess.Dto;
 using mwp.DataAccess.Entities;
-using mwp.Service.Login;
+using mwp.Service;
 using mwp.WebApi.Models;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -20,12 +22,14 @@ namespace mwp.WebApi.Controllers
     public class LoginController : ControllerBase
     {
         private readonly IConfiguration config;
-        private readonly ILoginService loginService;
+        private readonly IUserService userService;
+        private readonly IMapper mapper;
 
-        public LoginController(IConfiguration config, ILoginService loginService)
+        public LoginController(IConfiguration config, IUserService userService, IMapper mapper)
         {
             this.config = config;
-            this.loginService = loginService;
+            this.userService = userService;
+            this.mapper = mapper;
         }
 
         [AllowAnonymous]
@@ -46,7 +50,24 @@ namespace mwp.WebApi.Controllers
 
         [AllowAnonymous]
         [Route("create")]
-        public async Task<IActionResult> CreateUser([FromBody]UserModel login)
+        public async Task<IActionResult> CreateUser([FromBody]UserDto userDto)
+        {
+            var user = mapper.Map<User>(userDto);
+
+            try
+            {
+                var result = await userService.Create(user, userDto.Password);
+                return Ok();
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(new { message = ex.Message });
+            }
+        }
+
+        [AllowAnonymous]
+        [Route("test")]
+        public async Task<IActionResult> Test([FromBody]UserModel login)
         {
             IActionResult response = Unauthorized();
             //var user = AuthenticateUser(login);
@@ -57,7 +78,7 @@ namespace mwp.WebApi.Controllers
             //    response = Ok(new { token = tokenString });
             //}
 
-            var existingUser = await loginService.GetUser(100);
+            var existingUser = await userService.GetUser(100);
 
             if (existingUser == null)
             {
@@ -65,12 +86,11 @@ namespace mwp.WebApi.Controllers
                 {
                     Name = "Tim",
                     Email = "timothychan92test@yahoo.com.hk",
-                    Password = "1234567890",
                     UserGroupId = 1,
                     UserRoleId = 1
                 };
 
-                var serviceResponse = await loginService.CreateUser(newUser);
+                var serviceResponse = await userService.CreateUser(newUser);
 
                 if (serviceResponse)
                 {

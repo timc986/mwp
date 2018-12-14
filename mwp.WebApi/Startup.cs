@@ -1,5 +1,7 @@
 ﻿using System.Text;
+using AutoMapper;
 using mwp.DataAccess;
+using mwp.Service;
 using mwp.WebApi.Services;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Builder;
@@ -8,7 +10,6 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.IdentityModel.Tokens;
-using mwp.Service.Login;
 using Microsoft.EntityFrameworkCore;
 
 namespace mwp.WebApi
@@ -26,10 +27,11 @@ namespace mwp.WebApi
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_1);
+            services.AddAutoMapper();
 
             //For IOC
             services.AddScoped<IInventoryService, InventoryService>();
-            services.AddScoped<ILoginService, LoginService>();
+            services.AddScoped<IUserService, UserService>();
             services.AddScoped<IDataAccessProvider, DataAccessPostgreSqlProvider>();
 
             //For token authentication
