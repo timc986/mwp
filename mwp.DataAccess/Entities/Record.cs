@@ -14,13 +14,13 @@ namespace mwp.DataAccess.Entities
         public string Title { get; set; }
         [Required]
         public string Content { get; set; }
-        [Required]
-        public DateTime CreatedOn { get; set; }
         [ForeignKey("UserId")]
         public virtual User User { get; set; }
         public long UserId { get; set; }
         [ForeignKey("RecordVisibilityId")]
         public virtual RecordVisibility RecordVisibility { get; set; }
         public long RecordVisibilityId { get; set; }
+        [Required]
+        public DateTime CreatedOn { get; set; }
     }
 }

@@ -26,7 +26,7 @@ namespace mwp.WebApi
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
-            services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_1);
+            services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_2);
             services.AddAutoMapper();
 
             //For IOC
@@ -54,7 +54,12 @@ namespace mwp.WebApi
 
             var sqlConnectionString = Configuration["ConnectionStrings:DataAccessPostgreSqlProvider"];
 
-            services.AddDbContext<DomainModelPostgreSqlContext>();
+            services.AddDbContext<DomainModelPostgreSqlContext>(
+                options => options
+                    .UseLazyLoadingProxies()
+                    .UseNpgsql(
+                        sqlConnectionString,
+                        b => b.MigrationsAssembly("mwp.WebApi")));
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

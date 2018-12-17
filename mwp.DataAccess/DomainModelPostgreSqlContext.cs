@@ -7,19 +7,19 @@ namespace mwp.DataAccess
 {
     public class DomainModelPostgreSqlContext : DbContext
     {
-        //public DomainModelPostgreSqlContext(DbContextOptions<DomainModelPostgreSqlContext> options) : base(options)
-        //{
-        //}
+        public DomainModelPostgreSqlContext(DbContextOptions<DomainModelPostgreSqlContext> options) : base(options)
+        {
+        }
 
         public DbSet<Record> Record { get; set; }
         public DbSet<User> User { get; set; }
         public DbSet<UserGroup> UserGroup { get; set; }
         public DbSet<UserRole> UserRole { get; set; }
 
-        protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
-        {
-            optionsBuilder.UseLazyLoadingProxies().UseNpgsql(@"User ID=postgres;Password=masterpw;Host=localhost;Port=5432;Database=mwp-local;Pooling=true;");
-        }
+        //protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
+        //{
+        //    optionsBuilder.UseLazyLoadingProxies().UseNpgsql(@"User ID=postgres;Password=masterpw;Host=localhost;Port=5432;Database=mwp-local;Pooling=true;");
+        //}
 
         protected override void OnModelCreating(ModelBuilder builder)
         {

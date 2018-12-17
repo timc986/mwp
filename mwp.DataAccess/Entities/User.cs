@@ -19,15 +19,15 @@ namespace mwp.DataAccess.Entities
         public byte[] PasswordHash { get; set; }
         [Required]
         public byte[] PasswordSalt { get; set; }
-        [Required]
-        public DateTime CreatedOn { get; set; }
-        [Required]
-        public bool IsDeleted { get; set; }
         [ForeignKey("UserGroupId")]
         public virtual UserGroup UserGroup { get; set; }
         public long UserGroupId { get; set; }
         [ForeignKey("UserRoleId")]
         public virtual UserRole UserRole { get; set; }
         public long UserRoleId { get; set; }
+        [Required]
+        public DateTime CreatedOn { get; set; }
+        [Required]
+        public bool IsDeleted { get; set; }
     }
 }
