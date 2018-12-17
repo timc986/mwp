@@ -44,21 +44,6 @@ namespace mwp.Service
             }
         }
 
-        public async Task<bool> CreateUser(DataAccess.Entities.User user)
-        {
-            try
-            {
-                await dataAccessProvider.AddUser(user);
-
-                return true;
-            }
-            catch (Exception e)
-            {
-                return false;
-                throw;
-            }
-        }
-
         public async Task<User> Login(string username, string password)
         {
             try
@@ -100,6 +85,7 @@ namespace mwp.Service
                     //throw new AppException("Password is required");
                 }
 
+                //for now username has to be unique for users
                 var existingUser = await dataAccessProvider.GetUserByName(user.Name);
 
                 if (existingUser != null)
@@ -125,8 +111,15 @@ namespace mwp.Service
 
         private static void CreatePasswordHash(string password, out byte[] passwordHash, out byte[] passwordSalt)
         {
-            if (password == null) throw new ArgumentNullException("password");
-            if (string.IsNullOrWhiteSpace(password)) throw new ArgumentException("Value cannot be empty or whitespace only string.", "password");
+            if (password == null)
+            {
+                throw new ArgumentNullException("password");
+            }
+
+            if (string.IsNullOrWhiteSpace(password))
+            {
+                throw new ArgumentException("Value cannot be empty or whitespace only string.", "password");
+            }
 
             using (var hmac = new System.Security.Cryptography.HMACSHA512())
             {
@@ -137,10 +130,25 @@ namespace mwp.Service
 
         private static bool VerifyPasswordHash(string password, byte[] storedHash, byte[] storedSalt)
         {
-            if (password == null) throw new ArgumentNullException("password");
-            if (string.IsNullOrWhiteSpace(password)) throw new ArgumentException("Value cannot be empty or whitespace only string.", "password");
-            if (storedHash.Length != 64) throw new ArgumentException("Invalid length of password hash (64 bytes expected).", "passwordHash");
-            if (storedSalt.Length != 128) throw new ArgumentException("Invalid length of password salt (128 bytes expected).", "passwordHash");
+            if (password == null)
+            {
+                throw new ArgumentNullException("password");
+            }
+
+            if (string.IsNullOrWhiteSpace(password))
+            {
+                throw new ArgumentException("Value cannot be empty or whitespace only string.", "password");
+            }
+
+            if (storedHash.Length != 64)
+            {
+                throw new ArgumentException("Invalid length of password hash (64 bytes expected).", "passwordHash");
+            }
+
+            if (storedSalt.Length != 128)
+            {
+                throw new ArgumentException("Invalid length of password salt (128 bytes expected).", "passwordHash");
+            }
 
             using (var hmac = new System.Security.Cryptography.HMACSHA512(storedSalt))
             {

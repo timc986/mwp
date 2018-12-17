@@ -34,16 +34,18 @@ namespace mwp.WebApi.Controllers
 
         [AllowAnonymous]
         [Route("login")]
-        public IActionResult Login([FromBody]UserModel login)
+        public async Task<IActionResult> Login([FromBody]UserModel login)
         {
             IActionResult response = Unauthorized();
-            var user = AuthenticateUser(login);
 
-            if (user != null)
+            var user = await userService.Login(login.Username, login.Password);
+
+            if (user == null)
             {
-                var tokenString = GenerateJsonWebToken(user);
-                response = Ok(new { token = tokenString });
             }
+
+            var tokenString = GenerateJsonWebToken(login.Username);
+            response = Ok(new { token = tokenString });
 
             return response;
         }
@@ -65,75 +67,25 @@ namespace mwp.WebApi.Controllers
             }
         }
 
-        [AllowAnonymous]
-        [Route("test")]
-        public async Task<IActionResult> Test([FromBody]UserModel login)
-        {
-            IActionResult response = Unauthorized();
-            //var user = AuthenticateUser(login);
-
-            //if (user != null)
-            //{
-            //    var tokenString = GenerateJsonWebToken(user);
-            //    response = Ok(new { token = tokenString });
-            //}
-
-            var existingUser = await userService.GetUser(100);
-
-            if (existingUser == null)
-            {
-                var newUser = new User
-                {
-                    Name = "Tim",
-                    Email = "timothychan92test@yahoo.com.hk",
-                    UserGroupId = 1,
-                    UserRoleId = 1
-                };
-
-                var serviceResponse = await userService.CreateUser(newUser);
-
-                if (serviceResponse)
-                {
-                    response = Ok(new { userId = newUser.Id });
-                }
-            }
-
-            return response;
-        }
-
-        private string GenerateJsonWebToken(UserModel userInfo)
+        private string GenerateJsonWebToken(string userName)
         {
             //TODO: store in database?
             var securityKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(config["Jwt:Key"]));
             var credentials = new SigningCredentials(securityKey, SecurityAlgorithms.HmacSha256);
 
             //stored username in the token claims
-            //information about the user which helps us to authorize the access to a resource.
             var claims = new[] {
-                new Claim("Username", userInfo.Username)
+                new Claim("Username", userName)
             };
 
-            var token = new JwtSecurityToken(config["Jwt:Issuer"],
+            var token = new JwtSecurityToken(
+                config["Jwt:Issuer"],
                 config["Jwt:Issuer"],
                 claims,
-                expires: DateTime.UtcNow.AddMinutes(120),
+                expires: DateTime.UtcNow.AddDays(7),
                 signingCredentials: credentials);
 
             return new JwtSecurityTokenHandler().WriteToken(token);
-        }
-
-        private UserModel AuthenticateUser(UserModel login)
-        {
-            UserModel user = null;
-
-
-            //TODO: check from database
-            if (string.Equals(login.Username, "Tim") && string.Equals(login.Password, "Timpw"))
-            {
-                user = login;
-            }
-
-            return user;
         }
     }
 }

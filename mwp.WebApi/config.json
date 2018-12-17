@@ -1,5 +1,0 @@
-﻿{
-  "ConnectionStrings": {
-    "DataAccessPostgreSqlProvider": "User ID=postgres;Password=masterpw;Host=localhost;Port=5432;Database=mwp-local;Pooling=true;"
-  }
-}

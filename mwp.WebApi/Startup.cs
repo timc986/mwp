@@ -52,7 +52,7 @@ namespace mwp.WebApi
                     };
                 });
 
-            var sqlConnectionString = "User ID=postgres;Password=masterpw;Host=localhost;Port=5432;Database=mwp-local;Pooling=true;";
+            var sqlConnectionString = Configuration["ConnectionStrings:DataAccessPostgreSqlProvider"];
 
             services.AddDbContext<DomainModelPostgreSqlContext>();
         }

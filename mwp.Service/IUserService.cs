@@ -7,7 +7,6 @@ namespace mwp.Service
     {
         Task<bool> CheckUserExist(long id);
         Task<DataAccess.Entities.User> GetUser(long id);
-        Task<bool> CreateUser(User user);
         Task<User> Login(string username, string password);
         Task<User> Create(User user, string password);
     }
