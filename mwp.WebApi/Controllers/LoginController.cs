@@ -42,6 +42,7 @@ namespace mwp.WebApi.Controllers
 
             if (user == null)
             {
+                return Unauthorized(new { error = "Username or password is incorrect" });
             }
 
             var tokenString = GenerateJsonWebToken(login.Username);
