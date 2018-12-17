@@ -14,21 +14,6 @@ namespace mwp.Service
             this.dataAccessProvider = dataAccessProvider;
         }
 
-        public async Task<bool> CheckUserExist(long id)
-        {
-            try
-            {
-                var result = await dataAccessProvider.UserExists(id);
-
-                return result;
-            }
-            catch (Exception e)
-            {
-                return false;
-                throw;
-            }
-        }
-
         public async Task<DataAccess.Entities.User> GetUser(long id)
         {
             try
@@ -48,11 +33,6 @@ namespace mwp.Service
         {
             try
             {
-                if (string.IsNullOrEmpty(username) || string.IsNullOrEmpty(password))
-                {
-                    return null;
-                }
-
                 var user = await dataAccessProvider.GetUserByName(username);
 
                 if (user == null)
@@ -80,11 +60,6 @@ namespace mwp.Service
         {
             try
             {
-                if (string.IsNullOrWhiteSpace(password))
-                {
-                    //throw new AppException("Password is required");
-                }
-
                 //for now username has to be unique for users
                 var existingUser = await dataAccessProvider.GetUserByName(user.Name);
 

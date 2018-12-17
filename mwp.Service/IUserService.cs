@@ -5,7 +5,6 @@ namespace mwp.Service
 {
     public interface IUserService
     {
-        Task<bool> CheckUserExist(long id);
         Task<DataAccess.Entities.User> GetUser(long id);
         Task<User> Login(string username, string password);
         Task<User> Create(User user, string password);

@@ -34,18 +34,18 @@ namespace mwp.WebApi.Controllers
 
         [AllowAnonymous]
         [Route("login")]
-        public async Task<IActionResult> Login([FromBody]UserModel login)
+        public async Task<IActionResult> Login([FromBody]UserDto login)
         {
             IActionResult response = Unauthorized();
 
-            var user = await userService.Login(login.Username, login.Password);
+            var user = await userService.Login(login.Name, login.Password);
 
             if (user == null)
             {
                 return Unauthorized(new { error = "Username or password is incorrect" });
             }
 
-            var tokenString = GenerateJsonWebToken(login.Username);
+            var tokenString = GenerateJsonWebToken(login.Name);
             response = Ok(new { token = tokenString });
 
             return response;
