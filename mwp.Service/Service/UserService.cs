@@ -2,16 +2,19 @@
 using System.Threading.Tasks;
 using mwp.DataAccess;
 using mwp.DataAccess.Entities;
+using mwp.Service.UnitOfWork;
 
-namespace mwp.Service
+namespace mwp.Service.Service
 {
     public class UserService: IUserService
     {
         private readonly IDataAccessProvider dataAccessProvider;
+        private readonly IUnitOfWork unitOfWork;
 
-        public UserService(IDataAccessProvider dataAccessProvider)
+        public UserService(IDataAccessProvider dataAccessProvider, IUnitOfWork unitOfWork)
         {
             this.dataAccessProvider = dataAccessProvider;
+            this.unitOfWork = unitOfWork;
         }
 
         public async Task<DataAccess.Entities.User> GetUser(long id)
@@ -63,6 +66,8 @@ namespace mwp.Service
                 //for now username has to be unique for users
                 var existingUser = await dataAccessProvider.GetUserByName(user.Name);
 
+                var xxx = await unitOfWork.UserRepository.GetAll();
+
                 if (existingUser != null)
                 {
                     //throw new AppException("Username \"" + user.Name + "\" is already taken");
@@ -73,7 +78,11 @@ namespace mwp.Service
                 user.PasswordHash = passwordHash;
                 user.PasswordSalt = passwordSalt;
 
-                await dataAccessProvider.AddUser(user);
+                // await dataAccessProvider.AddUser(user);
+
+                var result = await unitOfWork.UserRepository.Add(user);
+
+                var result2 = await unitOfWork.Save();
 
                 return user;
             }

@@ -1,7 +1,7 @@
 ﻿using System.Threading.Tasks;
 using mwp.DataAccess.Entities;
 
-namespace mwp.Service
+namespace mwp.Service.Service
 {
     public interface IUserService
     {

@@ -9,6 +9,7 @@ using AutoMapper;
 using mwp.DataAccess.Dto;
 using mwp.DataAccess.Entities;
 using mwp.Service;
+using mwp.Service.Service;
 using mwp.WebApi.Models;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -33,7 +34,7 @@ namespace mwp.WebApi.Controllers
         }
 
         [AllowAnonymous]
-        [Route("login")]
+        [HttpPost("login")]
         public async Task<IActionResult> Login([FromBody]UserDto login)
         {
             IActionResult response = Unauthorized();
@@ -52,7 +53,7 @@ namespace mwp.WebApi.Controllers
         }
 
         [AllowAnonymous]
-        [Route("create")]
+        [HttpPost("create")]
         public async Task<IActionResult> CreateUser([FromBody]UserDto userDto)
         {
             var user = mapper.Map<User>(userDto);
@@ -60,7 +61,7 @@ namespace mwp.WebApi.Controllers
             try
             {
                 var result = await userService.Create(user, userDto.Password);
-                return Ok();
+                return Ok(new { userId = result.Id});
             }
             catch (Exception ex)
             {

@@ -1,7 +1,11 @@
 ﻿using System.Text;
 using AutoMapper;
 using mwp.DataAccess;
+using mwp.DataAccess.Entities;
 using mwp.Service;
+using mwp.Service.Repository;
+using mwp.Service.Service;
+using mwp.Service.UnitOfWork;
 using mwp.WebApi.Services;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Builder;
@@ -33,6 +37,8 @@ namespace mwp.WebApi
             services.AddScoped<IInventoryService, InventoryService>();
             services.AddScoped<IUserService, UserService>();
             services.AddScoped<IDataAccessProvider, DataAccessPostgreSqlProvider>();
+            services.AddScoped<IUnitOfWork, UnitOfWork>();
+            services.AddScoped<DbContext, DomainModelPostgreSqlContext>();
 
             //For token authentication
             services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
