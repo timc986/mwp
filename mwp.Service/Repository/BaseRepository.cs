@@ -28,7 +28,8 @@ namespace mwp.Service.Repository
             }
             catch (Exception e)
             {
-                return await Task.FromResult(false); ;
+                throw;
+                //return await Task.FromResult(false); ;
             }
         }
 
@@ -73,7 +74,8 @@ namespace mwp.Service.Repository
             }
             catch (Exception e)
             {
-                return await Task.FromResult(false);
+                throw;
+                //return await Task.FromResult(false);
             }
         }
 
@@ -90,7 +92,8 @@ namespace mwp.Service.Repository
             }
             catch (Exception e)
             {
-                return await Task.FromResult(false);
+                throw;
+                //return await Task.FromResult(false);
             }
         }
 

@@ -64,6 +64,7 @@ namespace mwp.Service.Service
 
                 if (existingUser != null)
                 {
+                    throw new Exception("Username \"" + user.Name + "\" is already taken");
                     //throw new AppException("Username \"" + user.Name + "\" is already taken");
                 }
 
@@ -80,7 +81,7 @@ namespace mwp.Service.Service
             }
             catch (Exception e)
             {
-                throw e;
+                throw;
             }
         }
 

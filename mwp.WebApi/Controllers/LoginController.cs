@@ -39,21 +39,27 @@ namespace mwp.WebApi.Controllers
             }
 
             var tokenString = tokenGenerator.GenerateToken(user.Id.ToString());
-            response = Ok(new { token = tokenString });
+
+            var userDto = mapper.Map<UserDto>(user);
+
+            response = Ok(new { token = tokenString, user = userDto });
 
             return response;
         }
 
         [AllowAnonymous]
         [HttpPost("create")]
-        public async Task<IActionResult> CreateUser([FromBody]UserDto userDto)
+        public async Task<IActionResult> CreateUser([FromBody]UserDto createUser)
         {
-            var user = mapper.Map<User>(userDto);
+            var user = mapper.Map<User>(createUser);
 
             try
             {
-                var result = await userService.Create(user, userDto.Password);
-                return Ok(new { userId = result.Id});
+                var result = await userService.Create(user, createUser.Password);
+
+                var userDto = mapper.Map<UserDto>(result);
+
+                return Ok(new { user = userDto});
             }
             catch (Exception ex)
             {

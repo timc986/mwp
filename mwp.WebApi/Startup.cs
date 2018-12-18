@@ -29,7 +29,7 @@ namespace mwp.WebApi
         {
             services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_2);
             services.AddAutoMapper();
-
+            
             //For IOC
             services.AddScoped<IUserService, UserService>();
             services.AddScoped<IRecordService, RecordService>();

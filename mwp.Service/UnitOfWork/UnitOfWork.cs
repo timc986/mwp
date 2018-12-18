@@ -25,9 +25,10 @@ namespace mwp.Service.UnitOfWork
                 int save = await DatabaseContext.SaveChangesAsync();
                 return await Task.FromResult(true);
             }
-            catch (System.Exception e)
+            catch (Exception e)
             {
-                return await Task.FromResult(false);
+                throw;
+                //return await Task.FromResult(false);
             }
         }
 

@@ -4,6 +4,7 @@ using System.Text;
 using System.Threading.Tasks;
 using mwp.DataAccess.Entities;
 using mwp.Service.UnitOfWork;
+using Microsoft.EntityFrameworkCore;
 
 namespace mwp.Service.Service
 {
@@ -31,11 +32,11 @@ namespace mwp.Service.Service
             }
         }
 
-        public async Task<Record> GetUserRecord(long userId)
+        public async Task<List<Record>> GetUserRecord(long userId)
         {
             try
             {
-                var result = await unitOfWork.RecordRepository.GetFirstOrDefault(r => r.UserId == userId);
+                var result = await unitOfWork.RecordRepository.SearchBy(r => r.UserId == userId).ToListAsync();
 
                 return result;
             }

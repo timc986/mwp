@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using AutoMapper;
@@ -29,9 +30,7 @@ namespace mwp.WebApi.Controllers
         {
             try
             {
-                var currentUser = HttpContext.User;
-
-                var userIdClaim = currentUser.Claims.FirstOrDefault(c => c.Type == "userId");
+                var userIdClaim = HttpContext.User.Claims.FirstOrDefault(c => c.Type == "userId");
                 if (userIdClaim == null)
                 {
                     return BadRequest();
@@ -42,6 +41,31 @@ namespace mwp.WebApi.Controllers
 
                 var result = await recordService.CreateRecord(record);
                 return Ok(new { recordId = result.Id });
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(new { message = ex.Message });
+            }
+        }
+
+        [Authorize]
+        [HttpGet("getByUser")]
+        public async Task<IActionResult> GetRecord()
+        {
+            try
+            {
+                var userIdClaim = HttpContext.User.Claims.FirstOrDefault(c => c.Type == "userId");
+                if (userIdClaim == null)
+                {
+                    return BadRequest();
+                }
+
+                var userId = Convert.ToInt64(userIdClaim.Value);
+
+                var records = await recordService.GetUserRecord(userId);
+                var recordDtos = mapper.Map<List<RecordDto>>(records);
+
+                return Ok(new { recordList = recordDtos });
             }
             catch (Exception ex)
             {
