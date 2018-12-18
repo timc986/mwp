@@ -11,7 +11,8 @@ namespace mwp.Service.Repository
 {
     public class BaseRepository<T> : IBaseRepository<T> where T : class
     {
-        private DbContext dbContext;
+        private readonly DbContext dbContext;
+        private bool disposed = false;
 
         public BaseRepository(DbContext context)
         {
@@ -23,11 +24,13 @@ namespace mwp.Service.Repository
             try
             {
                 dbContext.Set<T>().Add(entity);
+                dbContext.Entry(entity).State = EntityState.Added;
+
                 return await Task.FromResult(true);
             }
             catch (Exception e)
             {
-                return await Task.FromResult(false);
+                return await Task.FromResult(false); ;
             }
         }
 
@@ -46,31 +49,19 @@ namespace mwp.Service.Repository
             return await result.ToListAsync();
         }
 
-        public virtual async Task<List<T>> SearchBy(Expression<Func<T, bool>> searchBy, params Expression<Func<T, object>>[] includes)
+        public virtual IQueryable<T> SearchBy(Expression<Func<T, bool>> searchBy, params Expression<Func<T, object>>[] includes)
         {
             var result = dbContext.Set<T>().Where(searchBy);
 
             foreach (var includeExpression in includes)
                 result = result.Include(includeExpression);
 
-            return await result.ToListAsync();
+            return result.AsQueryable();
         }
 
-        /// <summary>
-        /// Finds by predicate.
-        /// http://appetere.com/post/passing-include-statements-into-a-repository
-        /// </summary>
-        /// <param name="predicate">The predicate.</param>
-        /// <param name="includes">The includes.</param>
-        /// <returns></returns>
-        public virtual async Task<T> FindBy(Expression<Func<T, bool>> predicate, params Expression<Func<T, object>>[] includes)
+        public virtual async Task<T> GetFirstOrDefault(Expression<Func<T, bool>> predicate, params Expression<Func<T, object>>[] includes)
         {
-            var result = dbContext.Set<T>().Where(predicate);
-
-            foreach (var includeExpression in includes)
-                result = result.Include(includeExpression);
-
-            return await result.FirstOrDefaultAsync();
+            return await dbContext.Set<T>().FirstOrDefaultAsync(predicate);
         }
 
         public virtual async Task<bool> Update(T entity)
@@ -111,5 +102,22 @@ namespace mwp.Service.Repository
             return await Task.FromResult(true);
         }
 
+        public void Dispose()
+        {
+            Dispose(true);
+            GC.SuppressFinalize(this);
+        }
+
+        protected virtual void Dispose(bool disposing)
+        {
+            if (!disposed)
+            {
+                if (disposing)
+                {
+                    dbContext.Dispose();
+                }
+            }
+            disposed = true;
+        }
     }
 }

@@ -3,6 +3,7 @@ using System.Threading.Tasks;
 using mwp.DataAccess;
 using mwp.DataAccess.Entities;
 using mwp.Service.UnitOfWork;
+using Microsoft.EntityFrameworkCore;
 
 namespace mwp.Service.Service
 {
@@ -49,13 +50,12 @@ namespace mwp.Service.Service
                 {
                     return null;
                 }
-
+                
                 return user;
             }
             catch (Exception e)
             {
-                return null;
-                throw;
+                throw e;
             }
         }
 
@@ -64,9 +64,7 @@ namespace mwp.Service.Service
             try
             {
                 //for now username has to be unique for users
-                var existingUser = await dataAccessProvider.GetUserByName(user.Name);
-
-                var xxx = await unitOfWork.UserRepository.GetAll();
+                var existingUser = await unitOfWork.UserRepository.GetFirstOrDefault(u => u.Name == user.Name);
 
                 if (existingUser != null)
                 {
@@ -78,18 +76,15 @@ namespace mwp.Service.Service
                 user.PasswordHash = passwordHash;
                 user.PasswordSalt = passwordSalt;
 
-                // await dataAccessProvider.AddUser(user);
+                await unitOfWork.UserRepository.Add(user);
 
-                var result = await unitOfWork.UserRepository.Add(user);
-
-                var result2 = await unitOfWork.Save();
+                await unitOfWork.Save();
 
                 return user;
             }
             catch (Exception e)
             {
-                return null;
-                throw;
+                throw e;
             }
         }
 
