@@ -32,6 +32,7 @@ namespace mwp.WebApi
 
             //For IOC
             services.AddScoped<IUserService, UserService>();
+            services.AddScoped<IRecordService, RecordService>();
             services.AddScoped<IUnitOfWork, UnitOfWork>();
             services.AddScoped<IJsonWebTokenGenerator, JsonWebTokenGenerator>();
             services.AddScoped<DbContext, DomainModelPostgreSqlContext>();

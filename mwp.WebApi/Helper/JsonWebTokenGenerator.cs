@@ -16,7 +16,7 @@ namespace mwp.WebApi.Helper
             this.config = config;
         }
 
-        public string GenerateToken(string userName)
+        public string GenerateToken(string userId)
         {
             //TODO: store in database?
             var securityKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(config["Jwt:Key"]));
@@ -24,7 +24,7 @@ namespace mwp.WebApi.Helper
 
             //stored username in the token claims
             var claims = new[] {
-                new Claim("Username", userName)
+                new Claim("userId", userId)
             };
 
             var token = new JwtSecurityToken(

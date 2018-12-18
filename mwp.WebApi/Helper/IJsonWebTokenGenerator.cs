@@ -2,6 +2,6 @@
 {
     public interface IJsonWebTokenGenerator
     {
-        string GenerateToken(string userName);
+        string GenerateToken(string userId);
     }
 }
