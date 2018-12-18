@@ -36,7 +36,6 @@ namespace mwp.WebApi
             //For IOC
             services.AddScoped<IInventoryService, InventoryService>();
             services.AddScoped<IUserService, UserService>();
-            services.AddScoped<IDataAccessProvider, DataAccessPostgreSqlProvider>();
             services.AddScoped<IUnitOfWork, UnitOfWork>();
             services.AddScoped<DbContext, DomainModelPostgreSqlContext>();
 

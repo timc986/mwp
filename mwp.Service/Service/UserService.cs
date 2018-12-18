@@ -9,12 +9,10 @@ namespace mwp.Service.Service
 {
     public class UserService: IUserService
     {
-        private readonly IDataAccessProvider dataAccessProvider;
         private readonly IUnitOfWork unitOfWork;
 
-        public UserService(IDataAccessProvider dataAccessProvider, IUnitOfWork unitOfWork)
+        public UserService(IUnitOfWork unitOfWork)
         {
-            this.dataAccessProvider = dataAccessProvider;
             this.unitOfWork = unitOfWork;
         }
 
@@ -22,7 +20,7 @@ namespace mwp.Service.Service
         {
             try
             {
-                var result = await dataAccessProvider.GetUser(id);
+                var result = await unitOfWork.UserRepository.GetFirstOrDefault(u => u.Id == id);
 
                 return result;
             }
@@ -37,7 +35,7 @@ namespace mwp.Service.Service
         {
             try
             {
-                var user = await dataAccessProvider.GetUserByName(username);
+                var user = await unitOfWork.UserRepository.GetFirstOrDefault(u => u.Name == username);
 
                 if (user == null)
                 {
