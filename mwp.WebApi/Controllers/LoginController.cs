@@ -1,16 +1,12 @@
 ﻿using System;
-using System.IdentityModel.Tokens.Jwt;
-using System.Security.Claims;
-using System.Text;
 using System.Threading.Tasks;
 using AutoMapper;
 using mwp.DataAccess.Dto;
 using mwp.DataAccess.Entities;
 using mwp.Service.Service;
+using mwp.WebApi.Helper;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.Extensions.Configuration;
-using Microsoft.IdentityModel.Tokens;
 
 namespace mwp.WebApi.Controllers
 {
@@ -18,15 +14,15 @@ namespace mwp.WebApi.Controllers
     [ApiController]
     public class LoginController : ControllerBase
     {
-        private readonly IConfiguration config;
         private readonly IUserService userService;
         private readonly IMapper mapper;
+        private readonly IJsonWebTokenGenerator tokenGenerator;
 
-        public LoginController(IConfiguration config, IUserService userService, IMapper mapper)
+        public LoginController(IUserService userService, IMapper mapper, IJsonWebTokenGenerator tokenGenerator)
         {
-            this.config = config;
             this.userService = userService;
             this.mapper = mapper;
+            this.tokenGenerator = tokenGenerator;
         }
 
         [AllowAnonymous]
@@ -42,7 +38,7 @@ namespace mwp.WebApi.Controllers
                 return Unauthorized(new { error = "Username or password is incorrect" });
             }
 
-            var tokenString = GenerateJsonWebToken(login.Name);
+            var tokenString = tokenGenerator.GenerateToken(login.Name);
             response = Ok(new { token = tokenString });
 
             return response;
@@ -65,25 +61,6 @@ namespace mwp.WebApi.Controllers
             }
         }
 
-        private string GenerateJsonWebToken(string userName)
-        {
-            //TODO: store in database?
-            var securityKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(config["Jwt:Key"]));
-            var credentials = new SigningCredentials(securityKey, SecurityAlgorithms.HmacSha256);
-
-            //stored username in the token claims
-            var claims = new[] {
-                new Claim("Username", userName)
-            };
-
-            var token = new JwtSecurityToken(
-                config["Jwt:Issuer"],
-                config["Jwt:Issuer"],
-                claims,
-                expires: DateTime.UtcNow.AddDays(7),
-                signingCredentials: credentials);
-
-            return new JwtSecurityTokenHandler().WriteToken(token);
-        }
+        
     }
 }

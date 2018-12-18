@@ -3,6 +3,7 @@ using AutoMapper;
 using mwp.DataAccess;
 using mwp.Service.Service;
 using mwp.Service.UnitOfWork;
+using mwp.WebApi.Helper;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
@@ -32,6 +33,7 @@ namespace mwp.WebApi
             //For IOC
             services.AddScoped<IUserService, UserService>();
             services.AddScoped<IUnitOfWork, UnitOfWork>();
+            services.AddScoped<IJsonWebTokenGenerator, JsonWebTokenGenerator>();
             services.AddScoped<DbContext, DomainModelPostgreSqlContext>();
 
             //For token authentication
