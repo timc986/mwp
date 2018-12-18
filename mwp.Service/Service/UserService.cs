@@ -1,9 +1,7 @@
 ﻿using System;
 using System.Threading.Tasks;
-using mwp.DataAccess;
 using mwp.DataAccess.Entities;
 using mwp.Service.UnitOfWork;
-using Microsoft.EntityFrameworkCore;
 
 namespace mwp.Service.Service
 {
@@ -16,7 +14,7 @@ namespace mwp.Service.Service
             this.unitOfWork = unitOfWork;
         }
 
-        public async Task<DataAccess.Entities.User> GetUser(long id)
+        public async Task<User> GetUser(long id)
         {
             try
             {

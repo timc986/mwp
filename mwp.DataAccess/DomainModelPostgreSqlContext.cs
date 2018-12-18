@@ -1,6 +1,4 @@
-﻿using System;
-using System.Linq;
-using mwp.DataAccess.Entities;
+﻿using mwp.DataAccess.Entities;
 using Microsoft.EntityFrameworkCore;
 
 namespace mwp.DataAccess
