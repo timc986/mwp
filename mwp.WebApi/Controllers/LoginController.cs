@@ -38,11 +38,12 @@ namespace mwp.WebApi.Controllers
                 return Unauthorized(new { error = "Username or password is incorrect" });
             }
 
-            var tokenString = tokenGenerator.GenerateToken(user.Id.ToString());
+            var token = tokenGenerator.GenerateToken(user.Id.ToString());
 
-            var userDto = mapper.Map<UserDto>(user);
-
-            response = Ok(new { token = tokenString, user = userDto });
+            if (token != null)
+            {
+                response = Ok(new { token, user });
+            }
 
             return response;
         }

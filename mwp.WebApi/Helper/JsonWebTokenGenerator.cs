@@ -18,23 +18,30 @@ namespace mwp.WebApi.Helper
 
         public string GenerateToken(string userId)
         {
-            //TODO: store in database?
-            var securityKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(config["Jwt:Key"]));
-            var credentials = new SigningCredentials(securityKey, SecurityAlgorithms.HmacSha256);
+            try
+            {
+                //TODO: store in database?
+                var securityKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(config["Jwt:Key"]));
+                var credentials = new SigningCredentials(securityKey, SecurityAlgorithms.HmacSha256);
 
-            //stored username in the token claims
-            var claims = new[] {
-                new Claim("userId", userId)
-            };
+                //stored username in the token claims
+                var claims = new[] {
+                    new Claim("userId", userId)
+                };
 
-            var token = new JwtSecurityToken(
-                config["Jwt:Issuer"],
-                config["Jwt:Issuer"],
-                claims,
-                expires: DateTime.UtcNow.AddDays(7),
-                signingCredentials: credentials);
+                var token = new JwtSecurityToken(
+                    config["Jwt:Issuer"],
+                    config["Jwt:Issuer"],
+                    claims,
+                    expires: DateTime.UtcNow.AddDays(7),
+                    signingCredentials: credentials);
 
-            return new JwtSecurityTokenHandler().WriteToken(token);
+                return new JwtSecurityTokenHandler().WriteToken(token);
+            }
+            catch (Exception e)
+            {
+                return null;
+            }
         }
     }
 }

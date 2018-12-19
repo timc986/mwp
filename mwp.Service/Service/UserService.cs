@@ -1,5 +1,7 @@
 ﻿using System;
 using System.Threading.Tasks;
+using AutoMapper;
+using mwp.DataAccess.Dto;
 using mwp.DataAccess.Entities;
 using mwp.Service.UnitOfWork;
 
@@ -8,10 +10,12 @@ namespace mwp.Service.Service
     public class UserService: IUserService
     {
         private readonly IUnitOfWork unitOfWork;
+        private readonly IMapper mapper;
 
-        public UserService(IUnitOfWork unitOfWork)
+        public UserService(IUnitOfWork unitOfWork, IMapper mapper)
         {
             this.unitOfWork = unitOfWork;
+            this.mapper = mapper;
         }
 
         public async Task<User> GetUser(long id)
@@ -29,7 +33,7 @@ namespace mwp.Service.Service
             }
         }
 
-        public async Task<User> Login(string username, string password)
+        public async Task<UserDto> Login(string username, string password)
         {
             try
             {
@@ -46,12 +50,14 @@ namespace mwp.Service.Service
                 {
                     return null;
                 }
-                
-                return user;
+
+                var userDto = mapper.Map<UserDto>(user);
+
+                return userDto;
             }
             catch (Exception e)
             {
-                throw e;
+                return null;
             }
         }
 
