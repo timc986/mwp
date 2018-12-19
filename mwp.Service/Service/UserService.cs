@@ -18,19 +18,13 @@ namespace mwp.Service.Service
             this.mapper = mapper;
         }
 
-        public async Task<User> GetUser(long id)
+        public async Task<UserDto> GetUser(long id)
         {
-            try
-            {
-                var result = await unitOfWork.UserRepository.GetFirstOrDefault(u => u.Id == id);
+            var user = await unitOfWork.UserRepository.GetFirstOrDefault(u => u.Id == id);
 
-                return result;
-            }
-            catch (Exception e)
-            {
-                return null;
-                throw;
-            }
+            var userDto = mapper.Map<UserDto>(user);
+
+            return userDto;
         }
 
         public async Task<UserDto> Login(string username, string password)
@@ -61,7 +55,7 @@ namespace mwp.Service.Service
 
             if (existingUser != null)
             {
-                throw new Exception("Username" + createUser.Name + "is already taken");
+                throw new Exception("Username " + createUser.Name + " is already taken");
                 //throw new AppException("Username \"" + user.Name + "\" is already taken");
             }
 
