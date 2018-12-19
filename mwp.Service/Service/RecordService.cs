@@ -49,5 +49,43 @@ namespace mwp.Service.Service
 
             return recordDto;
         }
+
+        public async Task<RecordDto> UpdateRecord(RecordDto updateRecord, string userId)
+        {
+            //Only allows the same user to update its own record
+            var existingRecord = await unitOfWork.RecordRepository.GetFirstOrDefault(r => r.Id == updateRecord.Id && r.UserId == Convert.ToInt64(userId));
+            if (existingRecord == null)
+            {
+                throw new Exception("Invalid request");
+            }
+
+            //Only update these fields
+            existingRecord.Content = updateRecord.Content;
+            existingRecord.Title = updateRecord.Title;
+            if (updateRecord.RecordVisibilityId > 0)
+            {
+                existingRecord.RecordVisibilityId = updateRecord.RecordVisibilityId;
+            }
+
+            await unitOfWork.RecordRepository.Update(existingRecord);
+            await unitOfWork.Save();
+
+            var recordDto = mapper.Map<RecordDto>(existingRecord);
+
+            return recordDto;
+        }
+
+        public async Task DeleteRecord(long recordId, string userId)
+        {
+            //Only allows the same user to delete its own record
+            var existingRecord = await unitOfWork.RecordRepository.GetFirstOrDefault(r => r.Id == recordId && r.UserId == Convert.ToInt64(userId));
+            if (existingRecord == null)
+            {
+                throw new Exception("Invalid request");
+            }
+
+            await unitOfWork.RecordRepository.Delete(r => r.Id == recordId && r.UserId == Convert.ToInt64(userId));
+            await unitOfWork.Save();
+        }
     }
 }

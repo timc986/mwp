@@ -33,7 +33,7 @@ namespace mwp.WebApi.Controllers
                 
                 var record = await recordService.CreateRecord(createRecord, userIdClaim.Value);
 
-                return Ok(new { recordId = record.Id });
+                return Ok(new { record });
             }
             catch (Exception ex)
             {
@@ -56,6 +56,50 @@ namespace mwp.WebApi.Controllers
                 var records = await recordService.GetUserRecord(userIdClaim.Value);
 
                 return Ok(new { records });
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(new { message = ex.Message });
+            }
+        }
+
+        [Authorize]
+        [HttpPut("update")]
+        public async Task<IActionResult> UpdateRecord([FromBody]RecordDto updateRecord)
+        {
+            try
+            {
+                var userIdClaim = HttpContext.User.Claims.FirstOrDefault(c => c.Type == "userId");
+                if (userIdClaim == null)
+                {
+                    return BadRequest(new { message = "Invalid token" });
+                }
+
+                var record = await recordService.UpdateRecord(updateRecord, userIdClaim.Value);
+
+                return Ok(new { record });
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(new { message = ex.Message });
+            }
+        }
+
+        [Authorize]
+        [HttpDelete("delete")]
+        public async Task<IActionResult> DeleteRecord(long recordId)
+        {
+            try
+            {
+                var userIdClaim = HttpContext.User.Claims.FirstOrDefault(c => c.Type == "userId");
+                if (userIdClaim == null)
+                {
+                    return BadRequest(new { message = "Invalid token" });
+                }
+
+                await recordService.DeleteRecord(recordId, userIdClaim.Value);
+
+                return Ok();
             }
             catch (Exception ex)
             {
