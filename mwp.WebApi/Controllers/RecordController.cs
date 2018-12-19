@@ -50,7 +50,7 @@ namespace mwp.WebApi.Controllers
                 var userIdClaim = HttpContext.User.Claims.FirstOrDefault(c => c.Type == "userId");
                 if (userIdClaim == null)
                 {
-                    return BadRequest();
+                    return BadRequest(new { message = "Invalid token" });
                 }
 
                 var records = await recordService.GetUserRecord(userIdClaim.Value);

@@ -43,6 +43,10 @@ namespace mwp.Service.Service
                 throw new Exception("Username or password is incorrect");
             }
 
+            user.LastLogin = DateTime.UtcNow;
+            await unitOfWork.UserRepository.Update(user);
+            await unitOfWork.Save();
+
             var userDto = mapper.Map<UserDto>(user);
 
             return userDto;

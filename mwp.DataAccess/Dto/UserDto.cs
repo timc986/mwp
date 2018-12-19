@@ -12,6 +12,7 @@ namespace mwp.DataAccess.Dto
         [Required]
         public string Password { get; set; }
         public DateTime CreatedOn { get; set; }
+        public DateTime LastLogin { get; set; }
         public bool IsDeleted { get; set; }
         public long UserGroupId { get; set; }
         public long UserRoleId { get; set; }

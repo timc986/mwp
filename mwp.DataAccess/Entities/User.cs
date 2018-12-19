@@ -26,6 +26,8 @@ namespace mwp.DataAccess.Entities
         [Required]
         public DateTime CreatedOn { get; set; }
         [Required]
+        public DateTime LastLogin { get; set; }
+        [Required]
         public bool IsDeleted { get; set; }
     }
 }
