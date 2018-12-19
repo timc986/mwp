@@ -35,60 +35,48 @@ namespace mwp.Service.Service
 
         public async Task<UserDto> Login(string username, string password)
         {
-            try
+            var user = await unitOfWork.UserRepository.GetFirstOrDefault(u => u.Name == username);
+
+            if (user == null)
             {
-                var user = await unitOfWork.UserRepository.GetFirstOrDefault(u => u.Name == username);
-
-                if (user == null)
-                {
-                    return null;
-                }
-
-                var isPasswordVerified = VerifyPasswordHash(password, user.PasswordHash, user.PasswordSalt);
-
-                if (!isPasswordVerified)
-                {
-                    return null;
-                }
-
-                var userDto = mapper.Map<UserDto>(user);
-
-                return userDto;
+                throw new Exception("Username or password is incorrect");
             }
-            catch (Exception e)
+
+            var isPasswordVerified = VerifyPasswordHash(password, user.PasswordHash, user.PasswordSalt);
+
+            if (!isPasswordVerified)
             {
-                return null;
+                throw new Exception("Username or password is incorrect");
             }
+
+            var userDto = mapper.Map<UserDto>(user);
+
+            return userDto;
         }
 
-        public async Task<User> Create(User user, string password)
+        public async Task<UserDto> Create(UserDto createUser)
         {
-            try
+            //for now username has to be unique for users
+            var existingUser = await unitOfWork.UserRepository.GetFirstOrDefault(u => u.Name == createUser.Name);
+
+            if (existingUser != null)
             {
-                //for now username has to be unique for users
-                var existingUser = await unitOfWork.UserRepository.GetFirstOrDefault(u => u.Name == user.Name);
-
-                if (existingUser != null)
-                {
-                    throw new Exception("Username \"" + user.Name + "\" is already taken");
-                    //throw new AppException("Username \"" + user.Name + "\" is already taken");
-                }
-
-                CreatePasswordHash(password, out var passwordHash, out var passwordSalt);
-
-                user.PasswordHash = passwordHash;
-                user.PasswordSalt = passwordSalt;
-
-                await unitOfWork.UserRepository.Add(user);
-
-                await unitOfWork.Save();
-
-                return user;
+                throw new Exception("Username" + createUser.Name + "is already taken");
+                //throw new AppException("Username \"" + user.Name + "\" is already taken");
             }
-            catch (Exception e)
-            {
-                throw;
-            }
+
+            CreatePasswordHash(createUser.Password, out var passwordHash, out var passwordSalt);
+
+            var user = mapper.Map<User>(createUser);
+            user.PasswordHash = passwordHash;
+            user.PasswordSalt = passwordSalt;
+
+            await unitOfWork.UserRepository.Add(user);
+            await unitOfWork.Save();
+
+            var userDto = mapper.Map<UserDto>(user);
+
+            return userDto;
         }
 
         private static void CreatePasswordHash(string password, out byte[] passwordHash, out byte[] passwordSalt)

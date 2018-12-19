@@ -8,6 +8,5 @@ namespace mwp.Service.Service
     {
         Task<DataAccess.Entities.User> GetUser(long id);
         Task<UserDto> Login(string username, string password);
-        Task<User> Create(User user, string password);
     }
 }

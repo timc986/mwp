@@ -1,8 +1,6 @@
 ﻿using System;
 using System.Threading.Tasks;
-using AutoMapper;
 using mwp.DataAccess.Dto;
-using mwp.DataAccess.Entities;
 using mwp.Service.Service;
 using mwp.WebApi.Helper;
 using Microsoft.AspNetCore.Authorization;
@@ -15,13 +13,11 @@ namespace mwp.WebApi.Controllers
     public class LoginController : ControllerBase
     {
         private readonly IUserService userService;
-        private readonly IMapper mapper;
         private readonly IJsonWebTokenGenerator tokenGenerator;
 
-        public LoginController(IUserService userService, IMapper mapper, IJsonWebTokenGenerator tokenGenerator)
+        public LoginController(IUserService userService, IJsonWebTokenGenerator tokenGenerator)
         {
             this.userService = userService;
-            this.mapper = mapper;
             this.tokenGenerator = tokenGenerator;
         }
 
@@ -29,38 +25,29 @@ namespace mwp.WebApi.Controllers
         [HttpPost("login")]
         public async Task<IActionResult> Login([FromBody]UserDto login)
         {
-            IActionResult response = Unauthorized();
-
-            var user = await userService.Login(login.Name, login.Password);
-
-            if (user == null)
+            try
             {
-                return Unauthorized(new { error = "Username or password is incorrect" });
+                var user = await userService.Login(login.Name, login.Password);
+
+                var token = tokenGenerator.GenerateToken(user.Id.ToString());
+
+                return Ok(new { token, user });
             }
-
-            var token = tokenGenerator.GenerateToken(user.Id.ToString());
-
-            if (token != null)
+            catch (Exception ex)
             {
-                response = Ok(new { token, user });
+                return Unauthorized(new { message = ex.Message });
             }
-
-            return response;
         }
 
         [AllowAnonymous]
         [HttpPost("create")]
         public async Task<IActionResult> CreateUser([FromBody]UserDto createUser)
         {
-            var user = mapper.Map<User>(createUser);
-
             try
             {
-                var result = await userService.Create(user, createUser.Password);
+                var user = await userService.Create(createUser);
 
-                var userDto = mapper.Map<UserDto>(result);
-
-                return Ok(new { user = userDto});
+                return Ok(new { user });
             }
             catch (Exception ex)
             {
