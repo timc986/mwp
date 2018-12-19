@@ -108,6 +108,8 @@ namespace mwp.Service.Service
             return userDto;
         }
 
+        //TODO: Update user password, delete user
+
         private static void CreatePasswordHash(string password, out byte[] passwordHash, out byte[] passwordSalt)
         {
             if (password == null)
