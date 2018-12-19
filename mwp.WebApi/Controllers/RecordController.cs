@@ -86,7 +86,7 @@ namespace mwp.WebApi.Controllers
         }
 
         [Authorize]
-        [HttpDelete("delete")]
+        [HttpDelete("delete")] //delete?recordId=999
         public async Task<IActionResult> DeleteRecord(long recordId)
         {
             try
