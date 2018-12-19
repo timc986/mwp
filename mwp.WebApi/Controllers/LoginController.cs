@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Linq;
 using System.Threading.Tasks;
 using mwp.DataAccess.Dto;
 using mwp.Service.Service;
@@ -55,6 +56,28 @@ namespace mwp.WebApi.Controllers
             }
         }
 
-        
+        [Authorize]
+        [HttpPut("update")]
+        public async Task<IActionResult> UpdateUsernameEmail([FromBody]UserDto updateUser)
+        {
+            try
+            {
+                var userIdClaim = HttpContext.User.Claims.FirstOrDefault(c => c.Type == "userId");
+                if (userIdClaim == null)
+                {
+                    return BadRequest(new { message = "Invalid token" });
+                }
+
+                var user = await userService.UpdateUsernameEmail(updateUser, userIdClaim.Value);
+
+                return Ok(new { user });
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(new { message = ex.Message });
+            }
+        }
+
+
     }
 }

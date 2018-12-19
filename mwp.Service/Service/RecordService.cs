@@ -27,7 +27,7 @@ namespace mwp.Service.Service
             return result;
         }
 
-        public async Task<List<RecordDto>> GetUserRecord(string userIdString)
+        public async Task<List<RecordDto>> GetUserRecords(string userIdString)
         {
             var userId = Convert.ToInt64(userIdString);
             var records = await unitOfWork.RecordRepository.SearchBy(r => r.UserId == userId).ToListAsync();

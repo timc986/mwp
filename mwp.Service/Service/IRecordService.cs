@@ -8,7 +8,7 @@ namespace mwp.Service.Service
     public interface IRecordService
     {
         Task<Record> GetRecord(long id);
-        Task<List<RecordDto>> GetUserRecord(string userIdString);
+        Task<List<RecordDto>> GetUserRecords(string userIdString);
         Task<RecordDto> CreateRecord(RecordDto createRecord, string userId);
         Task<RecordDto> UpdateRecord(RecordDto updateRecord, string userId);
         Task<RecordDto> UpdateRecordVisibility(long recordId, long visibilityId, string userId);

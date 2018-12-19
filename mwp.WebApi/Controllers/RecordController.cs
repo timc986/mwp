@@ -43,7 +43,7 @@ namespace mwp.WebApi.Controllers
 
         [Authorize]
         [HttpGet("getByUser")]
-        public async Task<IActionResult> GetRecord()
+        public async Task<IActionResult> GetRecords()
         {
             try
             {
@@ -53,7 +53,7 @@ namespace mwp.WebApi.Controllers
                     return BadRequest(new { message = "Invalid token" });
                 }
 
-                var records = await recordService.GetUserRecord(userIdClaim.Value);
+                var records = await recordService.GetUserRecords(userIdClaim.Value);
 
                 return Ok(new { records });
             }

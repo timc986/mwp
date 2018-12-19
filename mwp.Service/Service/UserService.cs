@@ -77,6 +77,37 @@ namespace mwp.Service.Service
             return userDto;
         }
 
+        public async Task<UserDto> UpdateUsernameEmail(UserDto updateUser, string userId)
+        {
+            var existingUser = await unitOfWork.UserRepository.GetFirstOrDefault(u => u.Id == Convert.ToInt64(userId));
+            if (existingUser == null)
+            {
+                throw new Exception("Invalid request");
+            }
+
+            if (!string.IsNullOrWhiteSpace(updateUser.Name) && !string.IsNullOrWhiteSpace(updateUser.Email))
+            {
+                throw new Exception("Invalid request");
+            }
+            
+            //Only update these fields
+            if (!string.IsNullOrWhiteSpace(updateUser.Name))
+            {
+                existingUser.Name = updateUser.Name;
+            }
+            if (!string.IsNullOrWhiteSpace(updateUser.Email))
+            {
+                existingUser.Email = updateUser.Email;
+            }
+
+            await unitOfWork.UserRepository.Update(existingUser);
+            await unitOfWork.Save();
+
+            var userDto = mapper.Map<UserDto>(existingUser);
+
+            return userDto;
+        }
+
         private static void CreatePasswordHash(string password, out byte[] passwordHash, out byte[] passwordSalt)
         {
             if (password == null)
