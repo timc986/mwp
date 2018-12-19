@@ -75,6 +75,31 @@ namespace mwp.Service.Service
             return recordDto;
         }
 
+        public async Task<RecordDto> UpdateRecordVisibility(long recordId, long visibilityId, string userId)
+        {
+            //Only allows the same user to update its own record
+            var existingRecord = await unitOfWork.RecordRepository.GetFirstOrDefault(r => r.Id == recordId && r.UserId == Convert.ToInt64(userId));
+            if (existingRecord == null)
+            {
+                throw new Exception("Invalid request");
+            }
+
+            //Only update this fields
+            if (visibilityId < 1)
+            {
+                throw new Exception("Invalid visibility Id");
+            }
+
+            existingRecord.RecordVisibilityId = visibilityId;
+
+            await unitOfWork.RecordRepository.Update(existingRecord);
+            await unitOfWork.Save();
+
+            var recordDto = mapper.Map<RecordDto>(existingRecord);
+
+            return recordDto;
+        }
+
         public async Task DeleteRecord(long recordId, string userId)
         {
             //Only allows the same user to delete its own record

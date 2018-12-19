@@ -86,6 +86,28 @@ namespace mwp.WebApi.Controllers
         }
 
         [Authorize]
+        [HttpPut("updateVisibility")] //updateVisibility?recordId=20&visibilityId=2
+        public async Task<IActionResult> UpdateRecordVisibility(long recordId, long visibilityId)
+        {
+            try
+            {
+                var userIdClaim = HttpContext.User.Claims.FirstOrDefault(c => c.Type == "userId");
+                if (userIdClaim == null)
+                {
+                    return BadRequest(new { message = "Invalid token" });
+                }
+
+                var record = await recordService.UpdateRecordVisibility(recordId, visibilityId, userIdClaim.Value);
+
+                return Ok(new { record });
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(new { message = ex.Message });
+            }
+        }
+
+        [Authorize]
         [HttpDelete("delete")] //delete?recordId=999
         public async Task<IActionResult> DeleteRecord(long recordId)
         {
