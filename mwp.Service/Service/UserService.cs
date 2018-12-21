@@ -108,7 +108,7 @@ namespace mwp.Service.Service
             return userDto;
         }
 
-        //TODO: Update user password, delete user
+        //TODO: Update user password, delete user, Forget password (send email and reset password)
 
         private static void CreatePasswordHash(string password, out byte[] passwordHash, out byte[] passwordSalt)
         {
