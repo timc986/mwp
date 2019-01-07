@@ -9,7 +9,7 @@ namespace mwp.Service.Service
     {
         Task<Record> GetRecord(long id);
         Task<List<RecordDto>> GetUserRecords(string userIdString);
-        Task<RecordDto> CreateRecord(RecordDto createRecord, string userId);
+        Task<RecordDto> CreateRecord(CreateRecordRequest createRecord, string userId);
         Task<RecordDto> UpdateRecord(RecordDto updateRecord, string userId);
         Task<RecordDto> UpdateRecordVisibility(long recordId, long visibilityId, string userId);
         Task DeleteRecord(long recordId, string userId);

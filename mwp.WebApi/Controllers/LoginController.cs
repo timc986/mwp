@@ -24,7 +24,7 @@ namespace mwp.WebApi.Controllers
 
         [AllowAnonymous]
         [HttpPost("login")]
-        public async Task<IActionResult> Login([FromBody]UserDto login)
+        public async Task<IActionResult> Login([FromBody]LoginRequest login)
         {
             try
             {
@@ -42,7 +42,7 @@ namespace mwp.WebApi.Controllers
 
         [AllowAnonymous]
         [HttpPost("create")]
-        public async Task<IActionResult> CreateUser([FromBody]UserDto createUser)
+        public async Task<IActionResult> CreateUser([FromBody]CreateUserRequest createUser)
         {
             try
             {

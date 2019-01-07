@@ -8,8 +8,11 @@ namespace mwp.DataAccess
     {
         public AutoMapperProfile()
         {
+            CreateMap<LoginRequest, User>();
+            CreateMap<CreateUserRequest, User>();
             CreateMap<User, UserDto>();
             CreateMap<UserDto, User>();
+            CreateMap<CreateRecordRequest, Record>();
             CreateMap<Record, RecordDto>();
             CreateMap<RecordDto, Record>();
         }

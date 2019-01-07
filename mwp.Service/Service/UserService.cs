@@ -52,7 +52,7 @@ namespace mwp.Service.Service
             return userDto;
         }
 
-        public async Task<UserDto> Create(UserDto createUser)
+        public async Task<UserDto> Create(CreateUserRequest createUser)
         {
             //for now username has to be unique for users
             var existingUser = await unitOfWork.UserRepository.GetFirstOrDefault(u => u.Name == createUser.Name);

@@ -37,7 +37,7 @@ namespace mwp.Service.Service
             return recordDtos;
         }
 
-        public async Task<RecordDto> CreateRecord(RecordDto createRecord, string userId)
+        public async Task<RecordDto> CreateRecord(CreateRecordRequest createRecord, string userId)
         {
             var record = mapper.Map<Record>(createRecord);
             record.UserId = Convert.ToInt64(userId);

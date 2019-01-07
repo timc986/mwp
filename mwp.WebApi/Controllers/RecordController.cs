@@ -21,7 +21,7 @@ namespace mwp.WebApi.Controllers
         
         [Authorize]
         [HttpPost("create")]
-        public async Task<IActionResult> CreateRecord([FromBody]RecordDto createRecord)
+        public async Task<IActionResult> CreateRecord([FromBody]CreateRecordRequest createRecord)
         {
             try
             {
