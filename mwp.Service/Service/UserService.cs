@@ -27,20 +27,20 @@ namespace mwp.Service.Service
             return userDto;
         }
 
-        public async Task<UserDto> Login(string username, string password)
+        public async Task<UserDto> Login(string email, string password)
         {
-            var user = await unitOfWork.UserRepository.GetFirstOrDefault(u => u.Name == username);
+            var user = await unitOfWork.UserRepository.GetFirstOrDefault(u => u.Email == email);
 
             if (user == null)
             {
-                throw new Exception("Username or password is incorrect");
+                throw new Exception("Email or password is incorrect");
             }
 
             var isPasswordVerified = VerifyPasswordHash(password, user.PasswordHash, user.PasswordSalt);
 
             if (!isPasswordVerified)
             {
-                throw new Exception("Username or password is incorrect");
+                throw new Exception("Email or password is incorrect");
             }
 
             user.LastLogin = DateTime.UtcNow;
@@ -54,12 +54,12 @@ namespace mwp.Service.Service
 
         public async Task<UserDto> Create(CreateUserRequest createUser)
         {
-            //for now username has to be unique for users
-            var existingUser = await unitOfWork.UserRepository.GetFirstOrDefault(u => u.Name == createUser.Name);
+            //email has to be unique for users
+            var existingUser = await unitOfWork.UserRepository.GetFirstOrDefault(u => u.Email == createUser.Email);
 
             if (existingUser != null)
             {
-                throw new Exception("Username " + createUser.Name + " is already taken");
+                throw new Exception("User with email " + createUser.Email + " already exists");
                 //throw new AppException("Username \"" + user.Name + "\" is already taken");
             }
 

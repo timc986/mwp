@@ -28,7 +28,7 @@ namespace mwp.WebApi.Controllers
         {
             try
             {
-                var user = await userService.Login(login.Name, login.Password);
+                var user = await userService.Login(login.Email, login.Password);
 
                 var token = tokenGenerator.GenerateToken(user.Id.ToString());
 
