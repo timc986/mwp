@@ -12,6 +12,7 @@ namespace mwp.DataAccess
             CreateMap<CreateUserRequest, User>();
             CreateMap<User, UserDto>();
             CreateMap<UserDto, User>();
+            CreateMap<User, LoginResponse>();
             CreateMap<CreateRecordRequest, Record>();
             CreateMap<Record, RecordDto>();
             CreateMap<RecordDto, Record>();

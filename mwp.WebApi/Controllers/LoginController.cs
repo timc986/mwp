@@ -32,7 +32,9 @@ namespace mwp.WebApi.Controllers
 
                 var token = tokenGenerator.GenerateToken(user.Id.ToString());
 
-                return Ok(new { token, user });
+                user.Token = token;
+
+                return Ok(new { user });
             }
             catch (Exception ex)
             {

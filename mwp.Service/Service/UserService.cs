@@ -27,7 +27,7 @@ namespace mwp.Service.Service
             return userDto;
         }
 
-        public async Task<UserDto> Login(string email, string password)
+        public async Task<LoginResponse> Login(string email, string password)
         {
             var user = await unitOfWork.UserRepository.GetFirstOrDefault(u => u.Email == email);
 
@@ -47,7 +47,7 @@ namespace mwp.Service.Service
             await unitOfWork.UserRepository.Update(user);
             await unitOfWork.Save();
 
-            var userDto = mapper.Map<UserDto>(user);
+            var userDto = mapper.Map<LoginResponse>(user);
 
             return userDto;
         }
