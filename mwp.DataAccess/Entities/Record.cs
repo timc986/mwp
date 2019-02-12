@@ -12,6 +12,9 @@ namespace mwp.DataAccess.Entities
         public string Title { get; set; }
         [Required]
         public string Content { get; set; }
+        [ForeignKey("FeelingId")]
+        public virtual Feeling Feeling { get; set; }
+        public long FeelingId { get; set; }
         [ForeignKey("UserId")]
         public virtual User User { get; set; }
         public long UserId { get; set; }

@@ -10,9 +10,11 @@ namespace mwp.DataAccess
         }
 
         public DbSet<Record> Record { get; set; }
+        public DbSet<RecordVisibility> RecordVisibility { get; set; }
         public DbSet<User> User { get; set; }
         public DbSet<UserGroup> UserGroup { get; set; }
         public DbSet<UserRole> UserRole { get; set; }
+        public DbSet<Feeling> Feeling { get; set; }
 
         //protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         //{
@@ -26,6 +28,7 @@ namespace mwp.DataAccess
             builder.Entity<User>().HasKey(m => m.Id);
             builder.Entity<UserGroup>().HasKey(m => m.Id);
             builder.Entity<UserRole>().HasKey(m => m.Id);
+            builder.Entity<Feeling>().HasKey(m => m.Id);
 
             // set default values
             builder.Entity<User>().Property(u => u.IsDeleted).HasDefaultValue(false);

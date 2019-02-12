@@ -10,6 +10,7 @@ namespace mwp.DataAccess.Dto
         [Required]
         public string Content { get; set; }
         public long UserId { get; set; }
+        public long FeelingId { get; set; }
         public DateTime CreatedOn { get; set; }
         public long RecordVisibilityId { get; set; }
     }
