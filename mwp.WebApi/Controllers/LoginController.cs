@@ -80,6 +80,20 @@ namespace mwp.WebApi.Controllers
             }
         }
 
+        [Authorize]
+        [HttpGet("check")]
+        public IActionResult CheckToken()
+        {
+            try
+            {
+                return Ok();
+            }
+            catch (Exception ex)
+            {
+                return Unauthorized(new { message = ex.Message });
+            }
+        }
+
 
     }
 }
