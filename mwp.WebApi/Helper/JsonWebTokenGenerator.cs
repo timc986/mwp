@@ -22,7 +22,7 @@ namespace mwp.WebApi.Helper
             {
                 //TODO: store in database?
                 var securityKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(config["Jwt:Key"]));
-                var credentials = new SigningCredentials(securityKey, SecurityAlgorithms.HmacSha256);
+                var credentials = new SigningCredentials(securityKey, SecurityAlgorithms.HmacSha512Signature);
 
                 //stored username in the token claims
                 var claims = new[] {
